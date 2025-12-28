@@ -1,0 +1,13 @@
+[
+  {
+    "experiment_id": "7",
+    "experiment_name": "07_CLAHE_Zero-DCE_Gamma",
+    "num_images": 74,
+    "avg_PSNR": 7.1209080816335835,
+    "avg_SSIM": 0.44323924226821104,
+    "avg_Entropy": 6.664802741776626,
+    "std_PSNR": 2.0058073546429673,
+    "std_SSIM": 0.2345281403251118,
+    "std_Entropy": 0.5197769857356881
+  }
+]

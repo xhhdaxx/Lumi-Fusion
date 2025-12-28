@@ -6,6 +6,39 @@
 
 Lumi-Fusion是一个用于低光照图像增强的研究项目，实现了三种经典的图像增强算法，并提供了7种不同的实验配置来评估这些算法的单独和组合使用效果。
 
+## 项目结构
+
+```
+Lumi-Fusion/
+├── data/                      # Zero-DCE 数据集
+│   ├── train_data/            # 训练数据
+│   ├── test_data/             # 测试数据
+│   └── result/                # 结果输出目录（可选）
+├── models/                    # Zero-DCE 模型相关
+│   ├── zero_dce.py            # Zero-DCE 网络定义
+│   ├── zero_dce_loss.py       # Zero-DCE 损失函数
+│   ├── zero_dce_train.py      # Zero-DCE 训练脚本
+│   └── zero_dce_test.py       # Zero-DCE 测试脚本
+├── weight/                    # 模型权重
+│   └── Epoch99.pth            # Zero-DCE 预训练权重
+├── methods/                   # 增强算法
+│   ├── clahe.py               # CLAHE 算法
+│   ├── gamma.py               # Gamma 校正
+│   └── fusion.py              # 算法组合
+├── evaluation/                # 评估指标
+│   ├── psnr.py                # PSNR 计算
+│   ├── ssim.py                # SSIM 计算
+│   └── entropy.py             # 信息熵计算
+├── experiments/               # 实验脚本
+│   └── test_experiments.py    # 统一实验入口
+├── results/                   # 实验结果
+│   ├── images/                # 增强后的图像
+│   └── metrics/               # 评估指标结果
+├── dataloader.py              # 数据加载器
+├── requirement.txt            # 依赖包列表
+└── README.md                  # 本文件
+```
+
 ## 算法说明
 
 ### 1. CLAHE (Contrast Limited Adaptive Histogram Equalization)
@@ -24,7 +57,7 @@ Lumi-Fusion是一个用于低光照图像增强的研究项目，实现了三种
 ### 3. Zero-DCE (Zero-Reference Deep Curve Estimation)
 - **描述**: 基于深度学习的零参考低光照图像增强方法
 - **特点**: 不需要参考图像进行训练，通过曲线估计实现自适应增强
-- **模型**: 需要预训练的Zero-DCE模型（已包含在snapshots/目录中）
+- **模型**: 需要预训练的Zero-DCE模型（已包含在weight/目录中）
 
 ## 实验配置
 
@@ -48,22 +81,6 @@ Lumi-Fusion是一个用于低光照图像增强的研究项目，实现了三种
 2. **SSIM (Structural Similarity Index)**: 结构相似性指数，衡量图像结构相似度
 3. **信息熵 (Entropy)**: 衡量图像的细节和信息丰富程度
 
-## 数据集
-
-项目使用Zero-DCE数据集，数据目录结构如下：
-
-```
-data/
-├── train_data/          # 训练数据
-│   └── *.jpg
-├── test_data/           # 测试数据
-│   ├── DICM/
-│   │   └── *.jpg
-│   └── LIME/
-│       └── *.bmp
-└── result/              # 结果输出目录
-```
-
 ## 环境配置
 
 ### 系统要求
@@ -76,7 +93,7 @@ data/
 
 2. 安装依赖：
 ```bash
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
 注意：如果使用GPU，请根据你的CUDA版本安装对应的PyTorch版本：
@@ -91,51 +108,51 @@ pip install -r requirements.txt
 ### 1. 训练Zero-DCE模型
 
 ```bash
-python lowlight_train.py \
+python models/zero_dce_train.py \
     --lowlight_images_path data/train_data/ \
     --lr 0.0001 \
     --num_epochs 200 \
     --train_batch_size 8 \
-    --snapshots_folder snapshots/
+    --snapshots_folder weight/
 ```
 
 ### 2. 运行单个实验
 
 ```bash
 # 运行实验1 (CLAHE)
-python test_experiments.py --experiment_ids 1
+python experiments/test_experiments.py --experiment_ids 1
 
 # 运行实验3 (Zero-DCE)
-python test_experiments.py --experiment_ids 3
+python experiments/test_experiments.py --experiment_ids 3
 
 # 运行实验4 (CLAHE + Zero-DCE)
-python test_experiments.py --experiment_ids 4
+python experiments/test_experiments.py --experiment_ids 4
 ```
 
 ### 3. 运行所有实验
 
 ```bash
-python test_experiments.py --run_all
+python experiments/test_experiments.py --run_all
 ```
 
 ### 4. 自定义参数
 
 ```bash
-python test_experiments.py \
+python experiments/test_experiments.py \
     --run_all \
     --clahe_clip_limit 3.0 \
     --clahe_tile_size 8 \
     --gamma_value 2.5 \
-    --output_dir data/my_results/ \
-    --save_results_csv my_results.csv
+    --output_dir results/images/ \
+    --save_results_csv results/metrics/experiment_results.csv
 ```
 
 ### 5. 参数说明
 
 **主要参数**：
 - `--test_data_path`: 测试数据路径（默认: `data/test_data/`）
-- `--output_dir`: 结果输出目录（默认: `data/experiment_results/`）
-- `--model_path`: Zero-DCE模型路径（默认: `snapshots/Epoch99.pth`）
+- `--output_dir`: 结果输出目录（默认: `results/images/`）
+- `--model_path`: Zero-DCE模型路径（默认: `weight/Epoch99.pth`）
 - `--experiment_ids`: 要运行的实验ID列表（例如: `1 2 3`）
 - `--run_all`: 运行所有7个实验
 
@@ -145,42 +162,17 @@ python test_experiments.py \
 - `--gamma_value`: Gamma校正值（默认: 2.2）
 
 **输出参数**：
-- `--save_results_csv`: 保存CSV格式结果的文件路径
-- `--save_results_json`: 保存JSON格式结果的文件路径
-
-## 项目结构
-
-```
-Lumi-Fusion/
-├── data/                    # 数据目录
-│   ├── train_data/         # 训练数据
-│   ├── test_data/          # 测试数据
-│   └── result/             # 结果输出
-├── snapshots/              # 模型检查点
-│   ├── Epoch0.pth
-│   ├── Epoch1.pth
-│   └── Epoch99.pth
-├── dataloader.py           # 数据加载器
-├── model.py                # Zero-DCE模型定义
-├── Myloss.py               # 损失函数
-├── enhancement.py          # 增强算法实现（CLAHE, Gamma）
-├── metrics.py              # 评估指标实现（PSNR, SSIM, Entropy）
-├── utils.py                # 工具函数
-├── lowlight_train.py       # 训练脚本
-├── lowlight_test.py        # 原始测试脚本（仅Zero-DCE）
-├── test_experiments.py     # 统一实验测试脚本
-├── requirements.txt        # 依赖包列表
-└── README.md              # 本文件
-```
+- `--save_results_csv`: 保存CSV格式结果的文件路径（默认: `results/metrics/experiment_results.csv`）
+- `--save_results_json`: 保存JSON格式结果的文件路径（默认: `results/metrics/experiment_results.json`）
 
 ## 结果说明
 
 运行实验后，结果将保存在以下位置：
 
-1. **增强后的图像**: `data/experiment_results/{实验名称}/`
+1. **增强后的图像**: `results/images/{实验名称}/`
 2. **指标结果**: 
-   - CSV格式: `experiment_results.csv`
-   - JSON格式: `experiment_results.json`
+   - CSV格式: `results/metrics/experiment_results.csv`
+   - JSON格式: `results/metrics/experiment_results.json`
 
 结果文件包含以下字段：
 - `experiment_id`: 实验ID
@@ -225,7 +217,7 @@ Zero-DCE                   16.7890     0.7234      7.6789
 
 ## 注意事项
 
-1. **模型文件**: 确保Zero-DCE模型文件（`snapshots/Epoch99.pth`）存在，否则包含Zero-DCE的实验将无法运行。
+1. **模型文件**: 确保Zero-DCE模型文件（`weight/Epoch99.pth`）存在，否则包含Zero-DCE的实验将无法运行。
 
 2. **内存使用**: Zero-DCE模型需要一定的GPU/CPU内存。如果内存不足，可以减少batch size或使用CPU模式。
 
@@ -251,9 +243,15 @@ Zero-DCE                   16.7890     0.7234      7.6789
 
 ## 更新日志
 
+### v2.0.0
+- 重构项目结构，采用模块化设计
+- 将代码组织到models、methods、evaluation、experiments等目录
+- 分离CLAHE、Gamma和Zero-DCE算法实现
+- 分离PSNR、SSIM和信息熵评估指标
+- 统一实验入口脚本
+
 ### v1.0.0
 - 实现了CLAHE、Gamma和Zero-DCE三种增强算法
 - 支持7种实验配置
 - 实现了PSNR、SSIM和信息熵评估指标
 - 提供了统一的实验测试脚本
-
