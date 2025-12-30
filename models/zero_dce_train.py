@@ -88,7 +88,8 @@ def train(config):
 
             optimizer.zero_grad()
             loss.backward()
-            torch.nn.utils.clip_grad_norm(DCE_net.parameters(), config.grad_clip_norm)
+            torch.nn.utils.clip_grad_norm_(DCE_net.parameters(), config.grad_clip_norm) # 更新用法
+
             optimizer.step()
 
             if ((iteration + 1) % config.display_iter) == 0:
