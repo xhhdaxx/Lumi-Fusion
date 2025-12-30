@@ -255,7 +255,7 @@ def main():
                         help='Run all experiments')
 
     # 算法参数
-    parser.add_argument('--clahe_clip_limit', type=float, default=2.0,
+    parser.add_argument('--clahe_clip_limit', type=float, default=3.0,
                         help='CLAHE clip limit')
     parser.add_argument('--clahe_tile_size', type=int, default=8,
                         help='CLAHE tile grid size')

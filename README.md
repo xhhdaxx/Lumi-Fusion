@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-Lumi-Fusion是一个用于低光照图像增强的研究项目，实现了三种经典的图像增强算法，并提供了7种不同的实验配置来评估这些算法的单独和组合使用效果。
+Lumi-Fusion是一个用于低光照图像增强的研究项目，实现了三种经典的图像增强算法，并提供了8种不同的实验配置来评估这些算法的单独和组合使用效果。
 
 ## 项目结构
 
@@ -45,7 +45,7 @@ Lumi-Fusion/
 - **描述**: 对比度受限的自适应直方图均衡化
 - **特点**: 通过局部直方图均衡化来增强图像对比度，同时限制过度增强
 - **参数**: 
-  - `clip_limit`: 对比度限制（默认2.0）
+  - `clip_limit`: 对比度限制（默认3.0）
   - `tile_grid_size`: 网格大小（默认8x8）
 
 ### 2. Gamma校正
@@ -87,6 +87,7 @@ Lumi-Fusion/
 ### 系统要求
 - Python >= 3.7
 - CUDA支持的GPU（可选，CPU也可运行但速度较慢）
+- MPS (可选，若为Apple Silicon芯片)
 
 ### 安装步骤
 
@@ -138,7 +139,7 @@ python experiments/test_experiments.py --run_all
 ```bash
 python experiments/test_experiments.py \
     --run_all \
-    --clahe_clip_limit 3.0 \
+    --clahe_clip_limit 2.0 \
     --clahe_tile_size 8 \
     --gamma_value 2.5 \
     --output_dir results/images/ \
@@ -155,7 +156,7 @@ python experiments/test_experiments.py \
 - `--run_all`: 运行所有7个实验
 
 **算法参数**：
-- `--clahe_clip_limit`: CLAHE对比度限制（默认: 2.0）
+- `--clahe_clip_limit`: CLAHE对比度限制（默认: 3.0）
 - `--clahe_tile_size`: CLAHE网格大小（默认: 8）
 - `--gamma_value`: Gamma校正值（默认: 2.2）
 
