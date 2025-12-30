@@ -1,6 +1,4 @@
 """
-统一的实验测试脚本
-支持所有7种实验配置：
 1. CLAHE
 2. Gamma
 3. Zero-DCE
@@ -8,6 +6,7 @@
 5. Gamma + Zero-DCE
 6. Zero-DCE + Gamma
 7. CLAHE + Zero-DCE + Gamma
+8. Weighted_Fusion
 """
 import os
 import sys
@@ -139,7 +138,7 @@ def run_experiment(exp_id, test_data_path, output_dir, model_path, device,
         print(f"Fusion Weights: {dict(zip(exp_config['methods'], exp_config['weights']))}")
     print(f"{'=' * 60}\n")
 
-    # 加载Zero-DCE模型（如果需要）
+    # 加载Zero-DCE模型
     dce_model = None
     if 'zero_dce' in exp_config['methods']:
         print(f"Loading Zero-DCE model from {model_path}")
@@ -247,7 +246,7 @@ def main():
     parser.add_argument('--model_path', type=str, default='weight/Epoch99.pth',
                         help='Path to Zero-DCE model')
 
-    # 实验选择 (包含8)
+    # 实验选择
     parser.add_argument('--experiment_ids', type=str, nargs='+',
                         default=['1', '2', '3', '4', '5', '6', '7', '8'],
                         help='Experiment IDs to run (1-8)')
@@ -263,9 +262,11 @@ def main():
                         help='Gamma correction value')
 
     # 其他
-    parser.add_argument('--save_results_csv', type=str, default='results/metrics/experiment_results.csv',
+    parser.add_argument('--save_results_csv', type=str,
+                        default='results/metrics/experiment_results.csv',
                         help='Path to save results CSV file')
-    parser.add_argument('--save_results_json', type=str, default='results/metrics/experiment_results.json',
+    parser.add_argument('--save_results_json', type=str,
+                        default='results/metrics/experiment_results.json',
                         help='Path to save results JSON file')
 
     args = parser.parse_args()

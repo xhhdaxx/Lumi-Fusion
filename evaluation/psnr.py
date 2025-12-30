@@ -25,7 +25,7 @@ def calculate_psnr(img1, img2, data_range=255.0):
     img1 = img1.astype(np.float64)
     img2 = img2.astype(np.float64)
 
-    # 如果图像值在[0, 1]范围，转换到[0, 255]
+    # 若在[0, 1]范围，则转换到[0, 255]
     if img1.max() <= 1.0:
         img1 = img1 * 255.0
         img2 = img2 * 255.0
@@ -35,7 +35,6 @@ def calculate_psnr(img1, img2, data_range=255.0):
     if peak_signal_noise_ratio is not None:
         psnr = peak_signal_noise_ratio(img1, img2, data_range=data_range)
     else:
-        # Fallback implementation
         mse = np.mean((img1 - img2) ** 2)
         if mse == 0:
             return float('inf')

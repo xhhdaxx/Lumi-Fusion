@@ -25,7 +25,7 @@ def calculate_ssim(img1, img2, data_range=255.0):
     img1 = img1.astype(np.float64)
     img2 = img2.astype(np.float64)
 
-    # 如果图像值在[0, 1]范围，转换到[0, 255]
+    # 若在[0, 1]范围，则转换到[0, 255]
     if img1.max() <= 1.0:
         img1 = img1 * 255.0
         img2 = img2 * 255.0
@@ -48,7 +48,6 @@ def calculate_ssim(img1, img2, data_range=255.0):
             # 灰度图
             ssim = structural_similarity(img1, img2, data_range=data_range)
     else:
-        # Fallback: 简化的SSIM计算
         print("Warning: Using simplified SSIM calculation. Install scikit-image for accurate results.")
         ssim = 0.5  # 占位值
 

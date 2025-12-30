@@ -84,7 +84,7 @@ def enhance_image_combined(image, methods, model=None, device=None, weights=None
         accumulated_img = np.zeros((h, w, c), dtype=np.float32)
 
         for method, weight in zip(methods, weights):
-            # 关键：每次都对【原始图像】image 进行处理
+            # 每次都对【原始图像】image 进行处理
             if method == 'zero_dce':
                 res = apply_zero_dce(image, model, device)
             elif method == 'clahe':
