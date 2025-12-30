@@ -106,6 +106,9 @@ pip install -r requirement.txt
 
 ### 1. 训练Zero-DCE模型
 
+1. 下载训练数据集 <a href="https://drive.google.com/file/d/1GAB3uGsmAyLgtDBDONbil08vVu5wJcG3/view?usp=sharing">google drive</a> 或 <a href="https://pan.baidu.com/s/11-u_FZkJ8OgbqcG6763XyA">baidu cloud [password: 1234]</a>
+2. 解压于 "/Lumi-Fusion/data/train_data" 
+
 ```bash
 python models/zero_dce_train.py \
     --lowlight_images_path data/train_data/ \
@@ -229,6 +232,7 @@ Zero-DCE                   16.7890     0.7234      7.6789
 如果本项目对您的研究有帮助，请引用相关论文：
 
 - **Zero-DCE**: Learning to Enhance Low-Light Image via Zero-Reference Deep Curve Estimation (CVPR 2021)
+    - https://github.com/Li-Chongyi/Zero-DCE
 - **CLAHE**: Contrast Limited Adaptive Histogram Equalization
 - **Gamma Correction**: 经典的图像亮度调整方法
 
