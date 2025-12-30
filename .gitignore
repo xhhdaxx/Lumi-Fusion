@@ -1,0 +1,18 @@
+# 忽略 data/train_data 目录下的所有文件
+/data/train_data/*
+
+# 保留 data 目录及其下的 test_data 目录
+!/data/
+!/data/test_data/
+
+# 忽略 results 目录下的所有文件
+/results/*
+
+# 保留 results 目录
+!/results/
+
+# 忽略所有 Python 编译后的 .pyc 文件
+*.pyc
+
+# 忽略 Python 的缓存目录 __pycache__
+__pycache__/
