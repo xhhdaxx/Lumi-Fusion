@@ -2,10 +2,7 @@
 Zero-DCE测试脚本
 """
 import torch
-import torch.nn as nn
 import torchvision
-import torch.backends.cudnn as cudnn
-import torch.optim
 import os
 import sys
 import argparse
@@ -38,10 +35,10 @@ def lowlight(image_path, device, model_path='weight/Epoch99.pth', output_dir='da
     """处理单张低光照图像"""
     if torch.cuda.is_available():
         os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    
+
     data_lowlight = Image.open(image_path)
 
-    data_lowlight = (np.asarray(data_lowlight)/255.0)
+    data_lowlight = (np.asarray(data_lowlight) / 255.0)
     data_lowlight = torch.from_numpy(data_lowlight).float()
     data_lowlight = data_lowlight.permute(2, 0, 1)
     data_lowlight = data_lowlight.to(device).unsqueeze(0)
@@ -53,7 +50,7 @@ def lowlight(image_path, device, model_path='weight/Epoch99.pth', output_dir='da
 
     end_time = (time.time() - start)
     print(f"Processing time: {end_time:.4f}s")
-    
+
     # 构建输出路径
     rel_path = os.path.relpath(image_path, 'data/test_data/')
     result_path = os.path.join(output_dir, rel_path)
@@ -70,16 +67,16 @@ if __name__ == '__main__':
     parser.add_argument('--model_path', type=str, default='weight/Epoch99.pth')
     parser.add_argument('--output_dir', type=str, default='data/result/')
     args = parser.parse_args()
-    
+
     # 自动选择设备（CUDA/MPS/CPU）
     device = get_device()
-    
+
     with torch.no_grad():
         filePath = args.test_data_path
         file_list = os.listdir(filePath)
 
         for file_name in file_list:
-            test_list = glob.glob(filePath + file_name + "/*") 
+            test_list = glob.glob(filePath + file_name + "/*")
             for image in test_list:
                 print(f"Processing: {image}")
                 lowlight(image, device, args.model_path, args.output_dir)

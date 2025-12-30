@@ -2,14 +2,10 @@
 Zero-DCE训练脚本
 """
 import torch
-import torch.nn as nn
-import torchvision
-import torch.backends.cudnn as cudnn
 import torch.optim
 import os
 import sys
 import argparse
-import time
 
 # 添加父目录到路径以便导入
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -45,26 +41,26 @@ def weights_init(m):
 def train(config):
     # 自动选择设备（CUDA/MPS/CPU）
     device = get_device()
-    
+
     # 只在CUDA可用时设置CUDA_VISIBLE_DEVICES
     if torch.cuda.is_available():
         os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
     DCE_net = enhance_net_nopool().to(device)
     DCE_net.apply(weights_init)
-    
+
     if config.load_pretrain:
         DCE_net.load_state_dict(torch.load(config.pretrain_dir, map_location=device))
-    
-    train_dataset = dataloader.lowlight_loader(config.lowlight_images_path)		
-    
+
+    train_dataset = dataloader.lowlight_loader(config.lowlight_images_path)
+
     # pin_memory 主要用于 CUDA，MPS 和 CPU 不需要
     pin_memory = (device.type == 'cuda')
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, 
-        batch_size=config.train_batch_size, 
-        shuffle=True, 
-        num_workers=config.num_workers, 
+        train_dataset,
+        batch_size=config.train_batch_size,
+        shuffle=True,
+        num_workers=config.num_workers,
         pin_memory=pin_memory
     )
 
@@ -74,7 +70,7 @@ def train(config):
     loss_tv = L_TV()
 
     optimizer = torch.optim.Adam(DCE_net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-    
+
     DCE_net.train()
 
     for epoch in range(config.num_epochs):
@@ -82,11 +78,11 @@ def train(config):
             img_lowlight = img_lowlight.to(device)
             enhanced_image_1, enhanced_image, A = DCE_net(img_lowlight)
 
-            Loss_TV = 200*loss_tv(A)
+            Loss_TV = 200 * loss_tv(A)
             loss_spa_value = torch.mean(loss_spa(enhanced_image, img_lowlight))
-            loss_col = 5*torch.mean(loss_color(enhanced_image))
-            loss_exp_value = 10*torch.mean(loss_exp(enhanced_image))
-            
+            loss_col = 5 * torch.mean(loss_color(enhanced_image))
+            loss_exp_value = 10 * torch.mean(loss_exp(enhanced_image))
+
             # best_loss
             loss = Loss_TV + loss_spa_value + loss_col + loss_exp_value
 
@@ -95,9 +91,9 @@ def train(config):
             torch.nn.utils.clip_grad_norm(DCE_net.parameters(), config.grad_clip_norm)
             optimizer.step()
 
-            if ((iteration+1) % config.display_iter) == 0:
-                print("Loss at iteration", iteration+1, ":", loss.item())
-            if ((iteration+1) % config.snapshot_iter) == 0:
+            if ((iteration + 1) % config.display_iter) == 0:
+                print("Loss at iteration", iteration + 1, ":", loss.item())
+            if ((iteration + 1) % config.snapshot_iter) == 0:
                 torch.save(DCE_net.state_dict(), config.snapshots_folder + "Epoch" + str(epoch) + '.pth')
 
 

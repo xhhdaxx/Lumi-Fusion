@@ -20,11 +20,11 @@ def calculate_all_metrics(img_ref, img_enhanced):
     from .psnr import calculate_psnr
     from .ssim import calculate_ssim
     from .entropy import calculate_entropy
-    
+
     psnr = calculate_psnr(img_ref, img_enhanced)
     ssim = calculate_ssim(img_ref, img_enhanced)
     entropy_value = calculate_entropy(img_enhanced)
-    
+
     return {
         'PSNR': psnr,
         'SSIM': ssim,

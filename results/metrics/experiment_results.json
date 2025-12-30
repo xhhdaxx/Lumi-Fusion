@@ -1,5 +1,82 @@
 [
   {
+    "experiment_id": "1",
+    "experiment_name": "01_CLAHE",
+    "num_images": 74,
+    "avg_PSNR": 20.959622478370687,
+    "avg_SSIM": 0.7251977445808288,
+    "avg_Entropy": 6.9136424006593336,
+    "std_PSNR": 2.450446648038508,
+    "std_SSIM": 0.13698669849180928,
+    "std_Entropy": 1.1647574036278847
+  },
+  {
+    "experiment_id": "2",
+    "experiment_name": "02_Gamma",
+    "num_images": 74,
+    "avg_PSNR": 14.284536079373154,
+    "avg_SSIM": 0.60006147272297,
+    "avg_Entropy": 6.730000845457642,
+    "std_PSNR": 1.727657330440198,
+    "std_SSIM": 0.20214233880971144,
+    "std_Entropy": 0.9239301156121011
+  },
+  {
+    "experiment_id": "3",
+    "experiment_name": "03_Zero-DCE",
+    "num_images": 74,
+    "avg_PSNR": 14.456943774178697,
+    "avg_SSIM": 0.6112891709074304,
+    "avg_Entropy": 6.87921998131075,
+    "std_PSNR": 2.153971204090797,
+    "std_SSIM": 0.19089187172524147,
+    "std_Entropy": 0.8863266115364912
+  },
+  {
+    "experiment_id": "4",
+    "experiment_name": "04_CLAHE_Zero-DCE",
+    "num_images": 74,
+    "avg_PSNR": 11.905913617791594,
+    "avg_SSIM": 0.4877787865586865,
+    "avg_Entropy": 7.175574899960489,
+    "std_PSNR": 2.39719596461371,
+    "std_SSIM": 0.23980236065720237,
+    "std_Entropy": 0.6140594469860384
+  },
+  {
+    "experiment_id": "5",
+    "experiment_name": "05_Gamma_Zero-DCE",
+    "num_images": 74,
+    "avg_PSNR": 8.858400303960776,
+    "avg_SSIM": 0.46926156507411215,
+    "avg_Entropy": 6.638115251179258,
+    "std_PSNR": 1.5330614363583441,
+    "std_SSIM": 0.22506731190605336,
+    "std_Entropy": 0.619687576857753
+  },
+  {
+    "experiment_id": "6",
+    "experiment_name": "06_Zero-DCE_Gamma",
+    "num_images": 74,
+    "avg_PSNR": 8.552320339283696,
+    "avg_SSIM": 0.4488692576139924,
+    "avg_Entropy": 6.5242530638820515,
+    "std_PSNR": 1.6948746709383598,
+    "std_SSIM": 0.216407726051664,
+    "std_Entropy": 0.8120763933899603
+  },
+  {
+    "experiment_id": "7",
+    "experiment_name": "07_CLAHE_Zero-DCE_Gamma",
+    "num_images": 74,
+    "avg_PSNR": 7.1209080816335835,
+    "avg_SSIM": 0.44323924226821104,
+    "avg_Entropy": 6.664802741776626,
+    "std_PSNR": 2.0058073546429673,
+    "std_SSIM": 0.2345281403251118,
+    "std_Entropy": 0.5197769857356881
+  },
+  {
     "experiment_id": "8",
     "experiment_name": "08_Weighted_Fusion",
     "num_images": 74,

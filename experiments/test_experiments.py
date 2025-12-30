@@ -1,8 +1,13 @@
 """
 统一的实验测试脚本
-支持所有8种实验配置：
-1-7. 串行组合/单一方法
-8. 加权融合 (80% CLAHE + 10% Gamma + 10% Zero-DCE)
+支持所有7种实验配置：
+1. CLAHE
+2. Gamma
+3. Zero-DCE
+4. CLAHE + Zero-DCE
+5. Gamma + Zero-DCE
+6. Zero-DCE + Gamma
+7. CLAHE + Zero-DCE + Gamma
 """
 import os
 import sys
@@ -83,6 +88,9 @@ def get_device():
 
 def load_zero_dce_model(model_path, device):
     """加载Zero-DCE模型"""
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Zero-DCE model not found at: {model_path}")
+
     dce_net = enhance_net_nopool().to(device)
     dce_net.load_state_dict(torch.load(model_path, map_location=device))
     dce_net.eval()
@@ -159,6 +167,10 @@ def run_experiment(exp_id, test_data_path, output_dir, model_path, device,
                 images = glob.glob(os.path.join(folder_path, "*"))
                 images = [img for img in images if img.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp'))]
                 all_images.extend(images)
+
+    if not all_images:
+        print(f"No images found in {test_data_path}")
+        return None
 
     print(f"Found {len(all_images)} images in {len(dataset_folders)} datasets")
 

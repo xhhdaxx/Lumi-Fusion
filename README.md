@@ -61,17 +61,18 @@ Lumi-Fusion/
 
 ## 实验配置
 
-项目支持以下7种实验配置：
+项目支持以下8种实验配置：
 
-| ID | 实验名称 | 方法组合 | 描述 |
-|---|---|---|---|
-| 1 | CLAHE | CLAHE | 仅使用CLAHE算法 |
-| 2 | Gamma | Gamma | 仅使用Gamma校正 |
-| 3 | Zero-DCE | Zero-DCE | 仅使用Zero-DCE模型 |
-| 4 | CLAHE_Zero-DCE | CLAHE → Zero-DCE | 先CLAHE后Zero-DCE |
-| 5 | Gamma_Zero-DCE | Gamma → Zero-DCE | 先Gamma后Zero-DCE |
-| 6 | Zero-DCE_Gamma | Zero-DCE → Gamma | 先Zero-DCE后Gamma |
-| 7 | CLAHE_Zero-DCE_Gamma | CLAHE → Zero-DCE → Gamma | 三种算法组合使用 |
+| ID | 实验名称                 | 方法组合                                 | 描述              |
+|----|----------------------|--------------------------------------|-----------------|
+| 1  | CLAHE                | CLAHE                                | 仅使用CLAHE算法      |
+| 2  | Gamma                | Gamma                                | 仅使用Gamma校正      |
+| 3  | Zero-DCE             | Zero-DCE                             | 仅使用Zero-DCE模型   |
+| 4  | CLAHE_Zero-DCE       | CLAHE → Zero-DCE                     | 先CLAHE后Zero-DCE |
+| 5  | Gamma_Zero-DCE       | Gamma → Zero-DCE                     | 先Gamma后Zero-DCE |
+| 6  | Zero-DCE_Gamma       | Zero-DCE → Gamma                     | 先Zero-DCE后Gamma |
+| 7  | CLAHE_Zero-DCE_Gamma | CLAHE → Zero-DCE → Gamma             | 三种算法组合串型使用      |
+| 8  | Weighted_Fusion      | 80% CLAHE + 10% Zero-DCE + 10% Gamma | 三种算法组合加权使用      |
 
 ## 评估指标
 
@@ -96,12 +97,9 @@ Lumi-Fusion/
 pip install -r requirement.txt
 ```
 
-注意：如果使用GPU，请根据你的CUDA版本安装对应的PyTorch版本：
-- CUDA 10.2: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cu102`
-- CUDA 11.1: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cu111`
-- CPU only: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu`
-
-对于Apple Silicon (M1/M2) Mac，PyTorch会自动使用MPS后端。
+注意：
+- 若使用GPU，请根据你的CUDA版本安装对应的PyTorch版本。
+- 对于Apple Silicon Mac，PyTorch会自动使用MPS后端。
 
 ## 使用方法
 
@@ -235,13 +233,17 @@ Zero-DCE                   16.7890     0.7234      7.6789
 
 ## 许可证
 
-本项目仅供学习和研究使用。
+本项目采用 MIT License。
 
 ## 联系方式
 
-如有问题或建议，请提交Issue。
+邮箱：xhhdaxx@gmail.com
 
 ## 更新日志
+
+### v2.1.0
+- 清理了不必要的import语句，优化代码结构
+- 更新README文档
 
 ### v2.0.0
 - 重构项目结构，采用模块化设计

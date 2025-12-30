@@ -18,18 +18,18 @@ def apply_gamma(image, gamma=2.2):
     # 确保是float类型
     if image.dtype != np.float32 and image.dtype != np.float64:
         image = image.astype(np.float32)
-    
+
     # 归一化到[0, 1]范围
     if image.max() > 1.0:
         image = image / 255.0
-    
+
     # 应用gamma校正
     enhanced_image = np.power(image, 1.0 / gamma)
-    
+
     # 限制到[0, 1]范围
     enhanced_image = np.clip(enhanced_image, 0.0, 1.0)
-    
+
     # 转换回[0, 255]范围
     enhanced_image = (enhanced_image * 255.0).astype(np.uint8)
-    
+
     return enhanced_image

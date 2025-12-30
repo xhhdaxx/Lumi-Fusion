@@ -2,6 +2,7 @@
 SSIM评估指标
 """
 import numpy as np
+
 try:
     from skimage.metrics import structural_similarity
 except ImportError:
@@ -23,13 +24,13 @@ def calculate_ssim(img1, img2, data_range=255.0):
     # 确保数据类型一致
     img1 = img1.astype(np.float64)
     img2 = img2.astype(np.float64)
-    
+
     # 如果图像值在[0, 1]范围，转换到[0, 255]
     if img1.max() <= 1.0:
         img1 = img1 * 255.0
         img2 = img2 * 255.0
         data_range = 255.0
-    
+
     if structural_similarity is not None:
         # 如果是多通道图像
         if len(img1.shape) == 3:
@@ -37,8 +38,8 @@ def calculate_ssim(img1, img2, data_range=255.0):
             ssim_channels = []
             for i in range(img1.shape[2]):
                 ssim_channel = structural_similarity(
-                    img1[:, :, i], 
-                    img2[:, :, i], 
+                    img1[:, :, i],
+                    img2[:, :, i],
                     data_range=data_range
                 )
                 ssim_channels.append(ssim_channel)
@@ -50,5 +51,5 @@ def calculate_ssim(img1, img2, data_range=255.0):
         # Fallback: 简化的SSIM计算
         print("Warning: Using simplified SSIM calculation. Install scikit-image for accurate results.")
         ssim = 0.5  # 占位值
-    
+
     return ssim

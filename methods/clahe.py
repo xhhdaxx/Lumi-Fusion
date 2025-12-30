@@ -23,7 +23,7 @@ def apply_clahe(image, clip_limit=2.0, tile_grid_size=(8, 8)):
             image = (image * 255).astype(np.uint8)
         else:
             image = image.astype(np.uint8)
-    
+
     # 如果是灰度图
     if len(image.shape) == 2:
         clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
@@ -37,5 +37,5 @@ def apply_clahe(image, clip_limit=2.0, tile_grid_size=(8, 8)):
         l = clahe.apply(l)
         enhanced_image = cv2.merge([l, a, b])
         enhanced_image = cv2.cvtColor(enhanced_image, cv2.COLOR_LAB2RGB)
-    
+
     return enhanced_image
